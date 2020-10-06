@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.boot.security.server.dao.PaperDetailDao">
+
+	<resultMap id="detailMap" type="com.boot.security.server.model.Paperdetail">
+		<id column="pdid" property="pdid" />
+		<result column="pid" property="pid"/>
+		<result column="typeA" property="typeA"/>
+		<result column="typeB" property="typeB"/>
+		<result column="typeC" property="typeC"/>
+		<result column="typeD" property="typeD"/>
+		<result column="p_right" property="right"/>
+		<result column="p_type" property="type"/>
+		<result column="p_value" property="value"/>
+	</resultMap>
+
+	<sql id="where">
+		<where>
+			<if test="params.pdid != null and params.pdid != ''">
+				and pdid = #{params.pdid} 
+			</if>
+			<if test="params.pid != null and params.pid != ''">
+				and pid = #{params.pid} 
+			</if>
+
+			<if test="params.content != null and params.content != ''">
+				and content = #{params.content} 
+			</if>
+			<if test="params.typeA != null and params.typeA != ''">
+				and typeA = #{params.typeA} 
+			</if>
+			<if test="params.typeB != null and params.typeB != ''">
+				and typeB = #{params.typeB} 
+			</if>
+			<if test="params.typeC != null and params.typeC != ''">
+				and typeC = #{params.typeC} 
+			</if>
+			<if test="params.typeD != null and params.typeD != ''">
+				and typeD = #{params.typeD} 
+			</if>
+			<if test="params.right != null and params.right != ''">
+				and p_right = #{params.right}
+			</if>
+			<if test="params.type != null and params.type != ''">
+				and p_type = #{params.type}
+			</if>
+			<if test="params.value != null and params.value != ''">
+				and p_value = #{params.value}
+			</if>
+		
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(1) from paperdetail t
+		<include refid="where" />
+	</select>
+
+	<select id="list" resultMap="detailMap">
+		select * from paperdetail t
+		<include refid="where" />
+		${params.orderBy}
+		limit #{offset}, #{limit}
+	</select>
+
+	<update id="update">
+		update paperdetail t
+		<set>
+			<if test="pdid != null">
+				pdid = #{pdid}, 
+			</if>
+			<if test="pid != null">
+				pid = #{pid}, 
+			</if>
+
+			<if test="content != null">
+				content = #{content}, 
+			</if>
+			<if test="typeA != null">
+				typeA = #{typeA}, 
+			</if>
+			<if test="typeB != null">
+				typeB = #{typeB}, 
+			</if>
+			<if test="typeC != null">
+				typeC = #{typeC}, 
+			</if>
+			<if test="typeD != null">
+				typeD = #{typeD}, 
+			</if>
+			<if test="right != null">
+				p_right = #{right},
+			</if>
+			<if test="type != null">
+				p_type = #{type},
+			</if>
+			<if test="value != null">
+				p_value = #{value},
+			</if>
+
+		</set>
+
+		where t.id = #{id}
+	</update>
+
+	<select id="getById" resultMap="detailMap">
+		select * from paperdetail t where t.pdid = #{id}
+	</select>
+
+</mapper>
