@@ -57,7 +57,7 @@ mybatis:
   configuration:
     mapUnderscoreToCamelCase: true
 files:
-  path: ${file-path:d:/files}
+  path: ${file-path:e:/files}
 logging:
   config: classpath:logback-admin.xml
 log:
@@ -71,4 +71,4 @@ token:
     seconds: 7200
   jwtSecret: (XIAO:)_$^11244^%$_(WEI:)_@@++--(LAO:)_++++_.sds_(SHI:)
 server:
-  port: 8080
+  port: 8081
