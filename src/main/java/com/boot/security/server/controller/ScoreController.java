@@ -1,8 +1,13 @@
 package com.boot.security.server.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.boot.security.server.result.ResultData;
+import com.boot.security.server.utils.NewImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +34,21 @@ public class ScoreController {
 
     @Autowired
     private ScoreDao scoreDao;
+
+    @PostMapping("share")
+    public ResultData saveShare(String waterFilePath) throws IOException {
+
+        String sourceFilePath = "D:\\5.jpg";
+//        String waterFilePath = "D:\\4.jpg";
+        String saveFilePath = "e:\\files\\"+ System.currentTimeMillis() + Math.random()*100+101 +".jpg";
+        NewImageUtils newImageUtils = new NewImageUtils();
+        // 构建叠加层
+        BufferedImage buffImg = NewImageUtils.watermark(new File(sourceFilePath), new File(waterFilePath), 37, 37, 1.0f);
+        // 输出水印图片
+        newImageUtils.generateWaterFile(buffImg, saveFilePath);
+        return ResultData.success(saveFilePath);
+    }
+
 
     @PostMapping
     @ApiOperation(value = "保存")

@@ -54,7 +54,7 @@ public class NewImageUtils {
      * @param savePath
      *            图像加水印之后的保存路径
      */
-    private void generateWaterFile(BufferedImage buffImg, String savePath) {
+    public void generateWaterFile(BufferedImage buffImg, String savePath) {
         int temp = savePath.lastIndexOf(".") + 1;
         try {
             ImageIO.write(buffImg, savePath.substring(temp), new File(savePath));
