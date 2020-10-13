@@ -51,6 +51,8 @@
 									<th>正确答案</th>
 									<th>题目类型</th>
 									<th>分值</th>
+									<th>图片</th>
+									<th>科普详情</th>
 									<th>操作</th>
                                 </tr>
                             </thead>
@@ -74,6 +76,10 @@
 <script type="text/javascript">
 var pers = checkPermission();
 
+var pro = window.location.protocol;
+var host = window.location.host;
+var domain = pro + "//" + host;
+
 var example;
 function init(){
 	example = 
@@ -88,6 +94,7 @@ function init(){
         		"url" : "/paperdetails",
         		"type":"get",
         		"data":function(d){
+        			console.log(d)
     				d.id = $("#id").val();
     			}
         	},
@@ -103,7 +110,17 @@ function init(){
 				{"data" : "right", "defaultContent" : ""},
 				{"data" : "type", "defaultContent" : ""},
 				{"data" : "value", "defaultContent" : ""},
-				{ 
+				{"data" : "purl",
+					"defaultContent" : "",
+					"render": function (data, type, row) {
+						var url = row['purl'];
+						var src = domain + "/statics" + url;
+						u = "<a target='_blank' href='" + src +"'><img width='30' src='" + src + "'></img></a>";
+						return u;
+					}
+				},
+				{"data" : "detail", "defaultContent" : ""},
+				{
 								"data": "", 
 								"defaultContent": "",
 								"orderable":false,

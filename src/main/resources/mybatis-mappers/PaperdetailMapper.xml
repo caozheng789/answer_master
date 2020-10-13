@@ -13,6 +13,8 @@
 		<result column="p_right" property="right"/>
 		<result column="p_type" property="type"/>
 		<result column="p_value" property="value"/>
+		<result column="p_url" property="purl"/>
+		<result column="detail" property="detail"/>
 	</resultMap>
 
 	<sql id="where">
@@ -47,6 +49,13 @@
 			</if>
 			<if test="params.value != null and params.value != ''">
 				and p_value = #{params.value}
+			</if>
+
+			<if test="params.purl != null and params.purl != ''">
+				and p_url = #{params.purl}
+			</if>
+			<if test="params.detail != null and params.detail != ''">
+				and detail = #{params.detail}
 			</if>
 		
 		</where>
@@ -98,10 +107,16 @@
 			<if test="value != null">
 				p_value = #{value},
 			</if>
+			<if test="purl != null">
+				p_url = #{purl},
+			</if>
+			<if test="detail != null">
+				detail = #{detail},
+			</if>
 
 		</set>
 
-		where t.id = #{id}
+		where t.pdid = #{pdid}
 	</update>
 
 	<select id="getById" resultMap="detailMap">

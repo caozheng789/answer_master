@@ -26,7 +26,7 @@ public interface PaperDetailDao {
     int update(Paperdetail paperdetail);
     
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into paperdetail ( pid, content, typeA, typeB, typeC, typeD, p_right, p_type, p_value) values( #{pid}, #{content}, #{typeA}, #{typeB}, #{typeC}, #{typeD}, #{right}, #{type}, #{value})")
+    @Insert("insert into paperdetail ( pid, content, typeA, typeB, typeC, typeD, p_right, p_type, p_value,p_url,detail) values( #{pid}, #{content}, #{typeA}, #{typeB}, #{typeC}, #{typeD}, #{right}, #{type}, #{value},#{purl},#{detail})")
     int save(Paperdetail paperdetail);
     
     int count(@Param("params") Map<String, Object> params);

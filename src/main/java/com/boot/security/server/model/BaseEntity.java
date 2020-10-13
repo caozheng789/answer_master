@@ -1,7 +1,10 @@
 package com.boot.security.server.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
+
 
 public abstract class BaseEntity<ID extends Serializable> implements Serializable {
 
