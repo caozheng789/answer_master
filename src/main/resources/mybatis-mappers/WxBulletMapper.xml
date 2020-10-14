@@ -33,6 +33,20 @@
 		limit #{offset}, #{limit}
 	</select>
 
+	<select id="getBulletList" resultType="com.boot.security.server.dto.BulletWxUserDto">
+		SELECT
+			t.id,
+			t.context,
+			wu.nickname,
+			wu.headimgurl
+		FROM
+			wx_bullet t
+		LEFT JOIN wx_user wu ON wu.id = t.user_id
+		<include refid="where" />
+		${params.orderBy}
+		limit #{offset}, #{limit}
+	</select>
+
 	<update id="update">
 		update wx_bullet t
 		<set>

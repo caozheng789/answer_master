@@ -24,7 +24,7 @@ public interface ScoreDao {
     int update(Score score);
     
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    @Insert("insert into score(sid, uid, pid, mark, create_time) values(#{sid}, #{uid}, #{pid}, #{mark}, #{createTime})")
+    @Insert("insert into score(sid, uid, pid, mark, create_time,share_url) values(#{sid}, #{uid}, #{pid}, #{mark}, #{createTime},#{shareUrl})")
     int save(Score score);
     
     int count(@Param("params") Map<String, Object> params);

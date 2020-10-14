@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Score extends BaseEntity<Long> {
+public class Score  {
 
 	private Integer sid;
 	private Integer uid;
@@ -14,6 +14,8 @@ public class Score extends BaseEntity<Long> {
 	private Integer mark;
 
 	private Date createTime;
+
+	private String shareUrl;
 
 
 

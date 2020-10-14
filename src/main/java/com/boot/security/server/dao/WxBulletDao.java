@@ -3,6 +3,7 @@ package com.boot.security.server.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.boot.security.server.dto.BulletWxUserDto;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,7 @@ public interface WxBulletDao {
     int count(@Param("params") Map<String, Object> params);
 
     List<WxBullet> list(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+
+    List<BulletWxUserDto> getBulletList(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
 }
