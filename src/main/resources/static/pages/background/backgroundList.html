@@ -25,7 +25,7 @@
 									</form>
 	                   			</td>
 	                   			<td align="right">
-	                   				<button class="layui-btn layui-btn-sm" onclick="location.href='addWxUser.html'">
+	                   				<button class="layui-btn layui-btn-sm" onclick="location.href='addBackground.html'">
                                       <i class="layui-icon">&#xe608;</i> 添加
                                     </button>
 	                   			</td>
@@ -42,15 +42,9 @@
                                 </tr>                       
                                 <tr>
 									<th>id</th>
-									<th>微信名</th>
-									<th>头像</th>
-									<th>语言</th>
-									<th>特权</th>
-									<th>性别</th>
-									<th>openid</th>
-									<th>城市</th>
-									<th>省会</th>
-									<th>国家</th>
+									<th>背景图</th>
+									<th>背景图描述</th>
+									<th>背景图上传时间</th>
 									<th>操作</th>
                                 </tr>
                             </thead>
@@ -74,6 +68,10 @@
 <script type="text/javascript">
 var pers = checkPermission();
 
+var pro = window.location.protocol;
+var host = window.location.host;
+var domain = pro + "//" + host;
+
 var example;
 function init(){
 	example = 
@@ -85,7 +83,7 @@ function init(){
                 "url": "/js/plugin/datatables/Chinese.lang"
             },
         	"ajax": {
-        		"url" : "/wxusers",
+        		"url" : "/backgrounds",
         		"type":"get",
         		"data":function(d){
     				d.id = $("#id").val();
@@ -94,30 +92,25 @@ function init(){
         	"dom": "<'dt-toolbar'r>t<'dt-toolbar-footer'<'col-sm-10 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-10' p v>>",	
             "columns": [
 				{"data" : "id", "defaultContent" : ""},
-				{"data" : "nickname", "defaultContent" : ""},
-				{"data" : "headimgurl",
-					"defaultContent" : "",
-					"render": function (data, type, row) {
-						var url = row['headimgurl'];
-						var src =url;
-						var u = "<a target='_blank' href='" + src +"'><img width='30' src='" + src + "'></img></a>";
-						return u;
-					}
-				},
-				{"data" : "language", "defaultContent" : ""},
-				{"data" : "privilege", "defaultContent" : ""},
-				{"data" : "sex", "defaultContent" : ""},
-				{"data" : "openid", "defaultContent" : ""},
-				{"data" : "city", "defaultContent" : ""},
-				{"data" : "province", "defaultContent" : ""},
-				{"data" : "country", "defaultContent" : ""},
+				// {"data" : "bgImage", "defaultContent" : ""},
+                {"data" : "bgImage",
+                    "defaultContent" : "",
+                    "render": function (data, type, row) {
+                        var url = row['bgImage'];
+                        var src = domain + "/statics" + url;
+                        u = "<a target='_blank' href='" + src +"'><img width='30' src='" + src + "'></img></a>";
+                        return u;
+                    }
+                },
+				{"data" : "bgDesc", "defaultContent" : ""},
+				{"data" : "createTime", "defaultContent" : ""},
 				{ 
 								"data": "", 
 								"defaultContent": "",
 								"orderable":false,
 						        "render": function (data, type, row) {
                 		           var id = row['id'];
-                		           var href = "updateWxUser.html?id=" + id;
+                		           var href = "updateBackground.html?id=" + id;
                                    var edit = buttonEdit(href, "", pers);
                 		           var del = buttonDel(id, "", pers);
                                    return edit + del;
@@ -139,7 +132,7 @@ function del(id){
     }, function() {
     	$.ajax({
             type : 'delete',
-            url : '/wxusers/'+id,
+            url : '/backgrounds/'+id,
             success : function(data) {
                 example.ajax.reload();
                 layer.msg("删除成功");

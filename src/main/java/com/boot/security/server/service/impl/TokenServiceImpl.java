@@ -3,6 +3,7 @@ package com.boot.security.server.service.impl;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.boot.security.server.model.WxUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,6 +46,11 @@ public class TokenServiceImpl implements TokenService {
 		return new Token(token, loginUser.getLoginTime());
 	}
 
+	@Override
+	public Token saveWxToken(WxUser loginUser) {
+		return null;
+	}
+
 	private void cacheLoginUser(LoginUser loginUser) {
 		loginUser.setLoginTime(System.currentTimeMillis());
 		loginUser.setExpireTime(loginUser.getLoginTime() + expireSeconds * 1000);
@@ -58,6 +64,11 @@ public class TokenServiceImpl implements TokenService {
 	@Override
 	public void refresh(LoginUser loginUser) {
 		cacheLoginUser(loginUser);
+	}
+
+	@Override
+	public void refresh(WxUser loginUser) {
+
 	}
 
 	@Override
@@ -78,6 +89,11 @@ public class TokenServiceImpl implements TokenService {
 		}
 
 		return false;
+	}
+
+	@Override
+	public WxUser getLoginWxUser(String token) {
+		return null;
 	}
 
 	private String getTokenKey(String token) {

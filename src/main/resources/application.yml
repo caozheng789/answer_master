@@ -3,6 +3,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/answer_system?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: root
+#    password: ede66c740fc1f7c9
     password: 123456
     druid:
       initialSize: 5

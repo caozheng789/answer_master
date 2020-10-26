@@ -29,6 +29,20 @@
 		<include refid="where" />
 	</select>
 
+	<select id="getScoreList" resultType="com.boot.security.server.dto.ScoreUserDto">
+		SELECT
+			t.sid,
+			t.share_url,
+			wu.nickname,
+			wu.headimgurl
+		FROM
+			score t
+		LEFT JOIN wx_user wu ON wu.id = t.uid
+		<include refid="where" />
+		${params.orderBy}
+		limit #{offset}, #{limit}
+	</select>
+
 	<select id="list" resultType="Score">
 		select * from score t
 		<include refid="where" />

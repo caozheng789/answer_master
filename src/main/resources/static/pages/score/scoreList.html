@@ -94,7 +94,7 @@ function init(){
 				{"data" : "shareUrl", "defaultContent" : "",
                     "render": function (data, type, row) {
                         var url = row['shareUrl'];
-                        var src =  domain + "/statics"+url;
+                        var src =  domain + "statics/"+url;
                         u = "<a target='_blank' href='" + src +"'><img width='30' src='" + src + "'></img></a>";
                         return u;
                     }},

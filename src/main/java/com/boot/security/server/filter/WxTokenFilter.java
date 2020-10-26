@@ -1,12 +1,10 @@
 package com.boot.security.server.filter;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.boot.security.server.dao.WxUserDao;
+import com.boot.security.server.dto.LoginUser;
+import com.boot.security.server.exception.AmFilterException;
+import com.boot.security.server.model.WxUser;
+import com.boot.security.server.service.TokenService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.boot.security.server.dto.LoginUser;
-import com.boot.security.server.service.TokenService;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Token过滤器
@@ -27,30 +28,34 @@ import com.boot.security.server.service.TokenService;
  *         2017年10月14日
  */
 @Component
-public class TokenFilter extends OncePerRequestFilter {
+@AllArgsConstructor
+public class WxTokenFilter extends OncePerRequestFilter {
 
-	public static final String TOKEN_KEY = "token";
+	public static final String TOKEN_KEY = "wxToken";
 
 	@Autowired
 	private TokenService tokenService;
-	@Autowired
-	private UserDetailsService userDetailsService;
+
+	private final WxUserDao wxMapper;
 
 	private static final Long MINUTES_10 = 10 * 60 * 1000L;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		if (!request.getServletPath().contains("/wechat")) {
+		String path = request.getServletPath();
+		if (path.contains("h5")){
 			String token = getToken(request);
 			if (StringUtils.isNotBlank(token)) {
-				LoginUser loginUser = tokenService.getLoginUser(token);
+				WxUser loginUser = tokenService.getLoginWxUser(token);
 				if (loginUser != null) {
 					loginUser = checkLoginTime(loginUser);
-					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loginUser,
-							null, loginUser.getAuthorities());
-					SecurityContextHolder.getContext().setAuthentication(authentication);
+				}else{
+					throw new RuntimeException("暂无权限");
 				}
+			}else{
+				throw new RuntimeException("暂无权限");
+
 			}
 		}
 		filterChain.doFilter(request, response);
@@ -63,12 +68,12 @@ public class TokenFilter extends OncePerRequestFilter {
 	 * @param loginUser
 	 * @return
 	 */
-	private LoginUser checkLoginTime(LoginUser loginUser) {
+	private WxUser checkLoginTime(WxUser loginUser) {
 		long expireTime = loginUser.getExpireTime();
 		long currentTime = System.currentTimeMillis();
 		if (expireTime - currentTime <= MINUTES_10) {
 			String token = loginUser.getToken();
-			loginUser = (LoginUser) userDetailsService.loadUserByUsername(loginUser.getUsername());
+			loginUser = wxMapper.findnameByopenId(loginUser.getOpenid());
 			loginUser.setToken(token);
 			tokenService.refresh(loginUser);
 		}

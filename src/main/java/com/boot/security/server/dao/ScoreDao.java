@@ -3,6 +3,7 @@ package com.boot.security.server.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.boot.security.server.dto.ScoreUserDto;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -30,4 +31,15 @@ public interface ScoreDao {
     int count(@Param("params") Map<String, Object> params);
 
     List<Score> list(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    /**
+     * 获取分享
+     * @param params
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List<ScoreUserDto> getScoreList(@Param("params") Map<String, Object> params, @Param("offset") Integer offset, @Param("limit") Integer limit);
+
+
 }

@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import com.boot.security.server.model.WxUser;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -79,6 +80,28 @@ public class TokenServiceDbImpl implements TokenService {
 		return new Token(jwtToken, loginUser.getLoginTime());
 	}
 
+	@Override
+	public Token saveWxToken(WxUser loginUser) {
+		loginUser.setToken(UUID.randomUUID().toString());
+		loginUser.setLoginTime(System.currentTimeMillis());
+		loginUser.setExpireTime(loginUser.getLoginTime() + expireSeconds * 1000);
+
+		TokenModel model = new TokenModel();
+		model.setId(loginUser.getToken());
+		model.setCreateTime(new Date());
+		model.setUpdateTime(new Date());
+		model.setExpireTime(new Date(loginUser.getExpireTime()));
+		model.setVal(JSONObject.toJSONString(loginUser));
+
+		tokenDao.save(model);
+		// 登陆日志
+		//logService.save(loginUser.getId(), "登陆", true, null);
+
+		String jwtToken = createJWTToken1(loginUser);
+
+		return new Token(jwtToken, loginUser.getLoginTime());
+	}
+
 	/**
 	 * 生成jwt
 	 * 
@@ -95,8 +118,37 @@ public class TokenServiceDbImpl implements TokenService {
 		return jwtToken;
 	}
 
+	/**
+	 * 生成jwt
+	 *
+	 * @param loginUser
+	 * @return
+	 */
+	private String createJWTToken1(WxUser loginUser) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put(LOGIN_USER_KEY, loginUser.getToken());// 放入一个随机字符串，通过该串可找到登陆用户
+
+		String jwtToken = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, getKeyInstance())
+				.compact();
+
+		return jwtToken;
+	}
+
 	@Override
 	public void refresh(LoginUser loginUser) {
+		loginUser.setLoginTime(System.currentTimeMillis());
+		loginUser.setExpireTime(loginUser.getLoginTime() + expireSeconds * 1000);
+
+		TokenModel model = tokenDao.getById(loginUser.getToken());
+		model.setUpdateTime(new Date());
+		model.setExpireTime(new Date(loginUser.getExpireTime()));
+		model.setVal(JSONObject.toJSONString(loginUser));
+
+		tokenDao.update(model);
+	}
+
+	@Override
+	public void refresh(WxUser loginUser) {
 		loginUser.setLoginTime(System.currentTimeMillis());
 		loginUser.setExpireTime(loginUser.getLoginTime() + expireSeconds * 1000);
 
@@ -134,6 +186,29 @@ public class TokenServiceDbImpl implements TokenService {
 		}
 
 		return false;
+	}
+
+	@Override
+	public WxUser getLoginWxUser(String token) {
+		String uuid = getUUIDFromJWT(token);
+		if (uuid != null) {
+			TokenModel model = tokenDao.getById(uuid);
+			return toLoginWxUser(model);
+		}
+		return null;
+	}
+
+	private WxUser toLoginWxUser(TokenModel model) {
+		if (model == null) {
+			return null;
+		}
+
+		// 校验是否已过期
+		if (model.getExpireTime().getTime() > System.currentTimeMillis()) {
+			return JSONObject.parseObject(model.getVal(), WxUser.class);
+		}
+
+		return null;
 	}
 
 	private LoginUser toLoginUser(TokenModel model) {

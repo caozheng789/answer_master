@@ -16,7 +16,7 @@ public class AuthUtil {
     public static final String APPSECRET = "dba59ad863b9d2ba2e3f6daaf28cf918";
     //回调地址
 //    public static final String backUrl="http://188.131.221.99/callBack";
-    public static final String backUrl="http://192.168.1.163:8081/wx/callBack";
+    public static final String backUrl="http://192.168.1.163:8088/wechat/callBack";
 
     public static JSONObject doGetJson(String url) throws ClientProtocolException, IOException{
         JSONObject jsonObject = null;

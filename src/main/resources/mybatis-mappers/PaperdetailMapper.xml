@@ -18,7 +18,7 @@
 	</resultMap>
 
 	<select id="getPaper" resultMap="detailMap">
-		  SELECT pdid,content,typeA,typeB,typeC,typeD,p_right,p_url,p_value,detail FROM paperdetail ORDER BY RAND() LIMIT 10
+		  SELECT pdid,content,p_right,p_url,p_value,detail FROM paperdetail ORDER BY RAND() LIMIT 10
 	</select>
 
 	<sql id="where">

@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
+import com.boot.security.server.model.WxUser;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -71,6 +72,11 @@ public class TokenServiceJWTImpl implements TokenService {
 		return new Token(jwtToken, loginUser.getLoginTime());
 	}
 
+	@Override
+	public Token saveWxToken(WxUser loginUser) {
+		return null;
+	}
+
 	/**
 	 * 生成jwt
 	 * 
@@ -103,6 +109,11 @@ public class TokenServiceJWTImpl implements TokenService {
 	}
 
 	@Override
+	public void refresh(WxUser loginUser) {
+
+	}
+
+	@Override
 	public LoginUser getLoginUser(String jwtToken) {
 		String uuid = getUUIDFromJWT(jwtToken);
 		if (uuid != null) {
@@ -128,6 +139,11 @@ public class TokenServiceJWTImpl implements TokenService {
 		}
 
 		return false;
+	}
+
+	@Override
+	public WxUser getLoginWxUser(String token) {
+		return null;
 	}
 
 	private String getTokenKey(String uuid) {

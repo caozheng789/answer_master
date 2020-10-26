@@ -9,54 +9,60 @@
 	<form class="form-horizontal" onsubmit="return false" id="form">
 		<fieldset>
 			<input type="hidden" id="id" name="id">
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>试卷编号</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='试卷编号' type='text' name='pid' id='pid' data-bv-notempty='true' data-bv-notempty-message='试卷编号 不能为空'>
-				</div>
-			</div>
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>试卷编号</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='试卷编号' type='text' name='pid' id='pid' data-bv-notempty='true' data-bv-notempty-message='试卷编号 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
 			<div class='form-group'>
 				<label class='col-md-2 control-label'>题目内容</label>
 				<div class='col-md-10'>
 					<input class='form-control' placeholder='题目内容' type='text' name='content' id='content' data-bv-notempty='true' data-bv-notempty-message='题目内容 不能为空'>
 				</div>
 			</div>
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>选项A</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='选项A' type='text' name='typeA' id='typeA' data-bv-notempty='true' data-bv-notempty-message='选项A 不能为空'>
-				</div>
-			</div>
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>选项B</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='选项B' type='text' name='typeB' id='typeB' data-bv-notempty='true' data-bv-notempty-message='选项B 不能为空'>
-				</div>
-			</div>
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>选项C</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='选项C' type='text' name='typeC' id='typeC' data-bv-notempty='true' data-bv-notempty-message='选项C 不能为空'>
-				</div>
-			</div>
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>选项D</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='选项D' type='text' name='typeD' id='typeD' data-bv-notempty='true' data-bv-notempty-message='选项D 不能为空'>
-				</div>
-			</div>
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>选项A</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='选项A' type='text' name='typeA' id='typeA' data-bv-notempty='true' data-bv-notempty-message='选项A 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>选项B</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='选项B' type='text' name='typeB' id='typeB' data-bv-notempty='true' data-bv-notempty-message='选项B 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>选项C</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='选项C' type='text' name='typeC' id='typeC' data-bv-notempty='true' data-bv-notempty-message='选项C 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>选项D</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='选项D' type='text' name='typeD' id='typeD' data-bv-notempty='true' data-bv-notempty-message='选项D 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
 			<div class='form-group'>
 				<label class='col-md-2 control-label'>正确答案</label>
 				<div class='col-md-10'>
-					<input class='form-control' placeholder='正确答案' type='text' name='right' id='right' data-bv-notempty='true' data-bv-notempty-message='正确答案 不能为空'>
+					<select name="right" id="" lay-filter="mySelect">
+						<option value="可回收物">可回收物</option>
+						<option value="厨房垃圾">厨房垃圾</option>
+						<option value="有害垃圾">有害垃圾</option>
+						<option value="其他垃圾">其他垃圾</option>
+					</select>
+<!--					<input class='form-control' placeholder='正确答案' type='text' name='right' id='right' data-bv-notempty='true' data-bv-notempty-message='正确答案 不能为空'>-->
 				</div>
 			</div>
-			<div class='form-group'>
-				<label class='col-md-2 control-label'>题目类型</label>
-				<div class='col-md-10'>
-					<input class='form-control' placeholder='题目类型' type='text' name='type' id='type' data-bv-notempty='true' data-bv-notempty-message='题目类型 不能为空'>
-				</div>
-			</div>
+<!--			<div class='form-group'>-->
+<!--				<label class='col-md-2 control-label'>题目类型</label>-->
+<!--				<div class='col-md-10'>-->
+<!--					<input class='form-control' placeholder='题目类型' type='text' name='type' id='type' data-bv-notempty='true' data-bv-notempty-message='题目类型 不能为空'>-->
+<!--				</div>-->
+<!--			</div>-->
 			<div class='form-group'>
 				<label class='col-md-2 control-label'>分值</label>
 				<div class='col-md-10'>

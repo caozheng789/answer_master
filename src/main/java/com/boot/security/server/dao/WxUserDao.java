@@ -38,4 +38,7 @@ public interface WxUserDao {
      */
     @Select("select * from wx_user t where t.openid = #{openid}")
     WxUser findnameByopenId(String openid);
+
+    @Select("select * from wx_user t where t.token = #{token}")
+    WxUser getUserByToken(String token);
 }

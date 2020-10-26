@@ -42,14 +42,14 @@
                                 </tr>                       
                                 <tr>
 									<th>编号</th>
-									<th>试卷编号</th>
+<!--									<th>试卷编号</th>-->
 									<th>题目内容</th>
-									<th>选项A</th>
-									<th>选项B</th>
-									<th>选项C</th>
-									<th>选项D</th>
+<!--									<th>选项A</th>-->
+<!--									<th>选项B</th>-->
+<!--									<th>选项C</th>-->
+<!--									<th>选项D</th>-->
 									<th>正确答案</th>
-									<th>题目类型</th>
+<!--									<th>题目类型</th>-->
 									<th>分值</th>
 									<th>图片</th>
 									<th>科普详情</th>
@@ -101,20 +101,20 @@ function init(){
         	"dom": "<'dt-toolbar'r>t<'dt-toolbar-footer'<'col-sm-10 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-10' p v>>",	
             "columns": [
 				{"data" : "pdid", "defaultContent" : ""},
-				{"data" : "pid", "defaultContent" : ""},
+				// {"data" : "pid", "defaultContent" : ""},
 				{"data" : "content", "defaultContent" : ""},
-				{"data" : "typeA", "defaultContent" : ""},
-				{"data" : "typeB", "defaultContent" : ""},
-				{"data" : "typeC", "defaultContent" : ""},
-				{"data" : "typeD", "defaultContent" : ""},
+				// {"data" : "typeA", "defaultContent" : ""},
+				// {"data" : "typeB", "defaultContent" : ""},
+				// {"data" : "typeC", "defaultContent" : ""},
+				// {"data" : "typeD", "defaultContent" : ""},
 				{"data" : "right", "defaultContent" : ""},
-				{"data" : "type", "defaultContent" : ""},
+				// {"data" : "type", "defaultContent" : ""},
 				{"data" : "value", "defaultContent" : ""},
 				{"data" : "purl",
 					"defaultContent" : "",
 					"render": function (data, type, row) {
 						var url = row['purl'];
-						var src = domain + "/statics" + url;
+						var src = domain + "statics" + url;
 						u = "<a target='_blank' href='" + src +"'><img width='30' src='" + src + "'></img></a>";
 						return u;
 					}

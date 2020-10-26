@@ -2,6 +2,7 @@ package com.boot.security.server.service;
 
 import com.boot.security.server.dto.LoginUser;
 import com.boot.security.server.dto.Token;
+import com.boot.security.server.model.WxUser;
 
 /**
  * Token管理器<br>
@@ -19,10 +20,16 @@ public interface TokenService {
 
 	Token saveToken(LoginUser loginUser);
 
+	Token saveWxToken(WxUser loginUser);
+
 	void refresh(LoginUser loginUser);
+
+	void refresh(WxUser loginUser);
 
 	LoginUser getLoginUser(String token);
 
 	boolean deleteToken(String token);
+
+	WxUser getLoginWxUser(String token);
 
 }

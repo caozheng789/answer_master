@@ -1,5 +1,6 @@
 package com.boot.security.server.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ import com.boot.security.server.page.table.PageTableHandler;
 import com.boot.security.server.page.table.PageTableResponse;
 import com.boot.security.server.page.table.PageTableHandler.CountHandler;
 import com.boot.security.server.page.table.PageTableHandler.ListHandler;
-import com.boot.security.server.dao.WxUserDao;
-import com.boot.security.server.model.WxUser;
+import com.boot.security.server.dao.BackgroundDao;
+import com.boot.security.server.model.Background;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -26,32 +27,33 @@ import io.swagger.annotations.ApiOperation;
  * @author zheng
  */
 @RestController
-@RequestMapping("wxusers")
-public class WxUserController {
+@RequestMapping("/backgrounds")
+public class BackgroundController {
 
     @Autowired
-    private WxUserDao wxUserDao;
+    private BackgroundDao backgroundDao;
 
     @PostMapping
     @ApiOperation(value = "保存")
-    public WxUser save(@RequestBody WxUser wxUser) {
-        wxUserDao.save(wxUser);
-
-        return wxUser;
+    public Background save(@RequestBody Background background) {
+        backgroundDao.save(background);
+        return background;
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "根据id获取")
-    public WxUser get(@PathVariable Long id) {
-        return wxUserDao.getById(id);
+    public Background get(@PathVariable Long id) {
+        return backgroundDao.getById(id);
     }
 
     @PutMapping
     @ApiOperation(value = "修改")
-    public WxUser update(@RequestBody WxUser wxUser) {
-        wxUserDao.update(wxUser);
+    public Background update(@RequestBody Background background) {
 
-        return wxUser;
+        background.setCreateTime(new Date());
+        backgroundDao.update(background);
+
+        return background;
     }
 
     @GetMapping
@@ -61,13 +63,13 @@ public class WxUserController {
 
             @Override
             public int count(PageTableRequest request) {
-                return wxUserDao.count(request.getParams());
+                return backgroundDao.count(request.getParams());
             }
         }, new ListHandler() {
 
             @Override
-            public List<WxUser> list(PageTableRequest request) {
-                return wxUserDao.list(request.getParams(), request.getOffset(), request.getLimit());
+            public List<Background> list(PageTableRequest request) {
+                return backgroundDao.list(request.getParams(), request.getOffset(), request.getLimit());
             }
         }).handle(request);
     }
@@ -75,6 +77,6 @@ public class WxUserController {
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除")
     public void delete(@PathVariable Long id) {
-        wxUserDao.delete(id);
+        backgroundDao.delete(id);
     }
 }

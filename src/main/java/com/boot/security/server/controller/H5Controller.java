@@ -1,22 +1,18 @@
 package com.boot.security.server.controller;
 
-import com.boot.security.server.annotation.LogAnnotation;
+import com.boot.security.server.dao.BackgroundDao;
 import com.boot.security.server.dao.PaperDetailDao;
 import com.boot.security.server.dao.ScoreDao;
 import com.boot.security.server.dao.WxBulletDao;
-import com.boot.security.server.model.FileInfo;
-import com.boot.security.server.model.Paperdetail;
-import com.boot.security.server.model.Score;
-import com.boot.security.server.model.WxBullet;
+import com.boot.security.server.dto.ScoreUserDto;
+import com.boot.security.server.model.*;
 import com.boot.security.server.page.table.PageTableHandler;
 import com.boot.security.server.page.table.PageTableRequest;
 import com.boot.security.server.page.table.PageTableResponse;
 import com.boot.security.server.result.ResultData;
 import com.boot.security.server.service.FileService;
-import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,9 +21,7 @@ import sun.misc.BASE64Decoder;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * H5接口
@@ -47,6 +41,8 @@ public class H5Controller {
 
     private final ScoreDao scoreDao;
 
+    private final BackgroundDao backgroundDao;
+
     /**
      * 获取试卷
      * @return
@@ -56,6 +52,11 @@ public class H5Controller {
         List<Paperdetail> paper = null;
         try {
             paper = detailDao.getPaper();
+            if (null != paper){
+                for (Paperdetail detail :paper) {
+                    detail.setPurl( "http://188.131.221.99:8088/statics" + detail.getPurl());
+                }
+            }
         } catch (Exception e) {
             log.error("获取试卷失败=getPaper{}", e.getMessage());
             return ResultData.error("获取试卷失败");
@@ -84,7 +85,9 @@ public class H5Controller {
      */
     @GetMapping("getBullets")
     public ResultData getBullets(PageTableRequest request){
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("orderBy","order by create_time desc");
+        request.setParams(params);
 
         PageTableResponse handle = new PageTableHandler(PageTableHandler -> wxBulletDao.count(request.getParams()),
                 PageTableHandler -> wxBulletDao.getBulletList(request.getParams(), request.getOffset(), request.getLimit())).handle(request);
@@ -99,7 +102,7 @@ public class H5Controller {
 
     @PostMapping("sendBullets")
     @Transactional(rollbackFor = Exception.class)
-    public ResultData sendBullets(@RequestBody WxBullet wxBullet){
+    public ResultData sendBullets(WxBullet wxBullet){
         try {
             wxBulletDao.save(wxBullet);
         } catch (Exception e) {
@@ -147,7 +150,8 @@ public class H5Controller {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String tempFileName=uuid+suffix;
         //新生成的图片
-        String imgFilePath = "e:/files/" + tempFileName;
+//        String imgFilePath = "e:/files/" + tempFileName;
+        String imgFilePath = "/home/images/" + tempFileName;
         BASE64Decoder decoder = new BASE64Decoder();
         try {
             //Base64解码
@@ -162,7 +166,8 @@ public class H5Controller {
             out.write(b);
             out.flush();
             out.close();
-            String imgurl="192.168.1.163:8081/statics/"+tempFileName;
+//            String imgurl="192.168.1.163:8081/statics/"+tempFileName;
+            String imgurl= tempFileName;
 
             Score score = new Score();
             score.setUid(userId);
@@ -176,6 +181,47 @@ public class H5Controller {
         }
 
     }
+
+    /**
+     * 获取分享
+     */
+    @GetMapping("getScore")
+    public ResultData getScore(PageTableRequest request){
+        Map<String, Object> params = new HashMap<>();
+        params.put("orderBy","order by create_time desc");
+        request.setParams(params);
+        List<ScoreUserDto> list = scoreDao.getScoreList(request.getParams(), request.getOffset(), request.getLimit());
+        if (null != list){
+            for (ScoreUserDto sc :list) {
+                sc.setShareUrl("http://188.131.221.99:8088/statics/" + sc.getShareUrl());
+            }
+        }
+        PageTableResponse handle = new PageTableHandler(PageTableHandler -> scoreDao.count(request.getParams()),
+                PageTableHandler -> list).handle(request);
+        return ResultData.success(handle);
+
+    }
+
+    /**
+     * 获取大屏背景图片
+     */
+    @GetMapping("getBackground")
+    public ResultData getBackground(){
+        Background bg = null;
+        try {
+            bg = backgroundDao.getBackground();
+            if (null != bg){
+                bg.setBgImage("http://188.131.221.99:8088/statics" + bg.getBgImage());
+            }
+        } catch (Exception e) {
+            log.error("获取大屏失败{}",e.getMessage());
+            return ResultData.error("获取大屏失败！");
+        }
+        return ResultData.success(bg);
+
+    }
+
+
 
 
 
